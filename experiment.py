@@ -16,4 +16,7 @@ for sentence in sent_list:
             word_dict[word]= 1
         else:
             word_dict[word] = word_dict[word]+1  
-    
+file1=open("output.csv","w")
+for i in sent_list:
+    file1.write(str(i)+"\n")
+print(sent_list)
