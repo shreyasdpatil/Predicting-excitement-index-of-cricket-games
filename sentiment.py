@@ -18,8 +18,18 @@ def feat_extractor(document):
 with open('Shreyasdatacol.json', 'r') as fp1:
     cl2 = NaiveBayesClassifier(fp1,feature_extractor=feat_extractor,  format="json")
 
-
-test= open('Sarvesh_datacol.json','r') 
+pred=[]
+test= pd.read_excel('sarvesh_datacol.xlsx') 
+true= test.Label
+for instance in test.Data:
+    blob = TextBlob(instance, classifier=cl2)
+    pred.append(int(float(blob.classify())))
+count=0
+for i in range(len(pred)):
+    if pred[i] == true[i]:
+        count= count+1
+print('accuracy',count/len(pred))
+    
 print(cl2.accuracy(test, format='json'))
 #blob = TextBlob(A, classifier=cl2)
 #print(blob.classify())
