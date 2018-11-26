@@ -4,11 +4,6 @@ from textblob.classifiers import NaiveBayesClassifier
 import pandas as pd 
 from sentiment2 import pos_neg
 
-
-#Data = open("Sarvesh datacol.json", "r").read()
-#xtrain = Data["Data"]
-#ytrain = Data["Label"]
-#x = pd.concat([xtrain, ytrain],axis=1)
 def feat_extractor(document):
     feats = {}
     [pos,neg,neu] = pos_neg(document)
@@ -17,13 +12,50 @@ def feat_extractor(document):
     feats["count_neu"] = neu
     return feats 
 
-A = " If not for Jonker's feat on debut, this match was dead a long time ago. India's 172 might have divided opinions at the halfway stage but South Africa soon found that it shouldn't have. They were chasing an above par score on a pitch responsive to cutters and change of pace, something which conspired a dragged 52/2 from the hosts after 10 overs. A punt with Miller at the opening slot backfired, Klaasen didn't quite have this night to himself, and Duminy's 55 could have only taken them so far. "
-#print(feat_extractor(A))
-with open('Sarvesh datacol.json', 'r') as fp1:
+
+
+#A = "A comprhensive win for Pakistan but they have been made to work for the victory. A commendable show by Afghanistan in their first outing. Their players were spirited right until the last runs were scored and showed a very good attitude on the field. They were not intimidated by some of the big names in the Pakistan side and walk off with heads held high."
+with open('Shreyasdatacol.json', 'r') as fp1:
     cl2 = NaiveBayesClassifier(fp1,feature_extractor=feat_extractor,  format="json")
-#cl2 = NaiveBayesClassifier(Data, feature_extractor=feat_extractor, format="json")
-blob = TextBlob(A, classifier=cl2)
-print(blob.classify())
+
+
+test= open('Sarvesh_datacol.json','r') 
+print(cl2.accuracy(test, format='json'))
+#blob = TextBlob(A, classifier=cl2)
+#print(blob.classify())
+#
+#from textblob import TextBlob
+#from textblob.sentiments import NaiveBayesAnalyzer
+#from textblob.classifiers import NaiveBayesClassifier
+#import pandas as pd 
+#from sentiment2 import pos_neg
+#
+#A = "From 71-0 in the 6th over to 149/9 in 20. Who would have imagined that when Shane Watson was toying around with the bowling? But credit to Sri Lanka, and Mendis in particular, for the stunning comeback. They came back from nowhere and choked Australia with spin to take the game, despite some late hitting from Cameron White"
+#def feat_extractor(document):
+#    feats = {}
+#    [more_neutral, pos_neg_ratio] = pos_neg(document)
+#    feats["more_neutral"] = more_neutral
+#    feats["pos_neg_ratio"] = pos_neg_ratio
+#    return feats 
+#
+#with open('Shreyasdatacol.json', 'r') as fp2:
+#    cl2 = NaiveBayesClassifier(fp2, feature_extractor=feat_extractor, format="json")
+#    
+#
+#test= open('Sarvesh datacol.json','r') 
+#print(cl2.accuracy(test, format='json'))
+#
+#test = pd.read_excel("sarvesh datacol.xlsx")
+#text = test["Data"]
+#for i in text:
+    
+
+
+
+
+#
+#blob = TextBlob(A, classifier=cl2)
+#print(blob.classify())
 
 
 
