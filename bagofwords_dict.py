@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Nov 25 13:06:37 2018
-
-@author: Sarvesh
-"""
 
 from nltk.corpus import wordnet as wn
 
@@ -34,36 +28,37 @@ def get_all_synsets(word, pos=None):
 
 #--------------------------------------------------------------------------------------------------------#
     
-
-contro_dict={}
-excite_dict={}
-excite_google=['amazing','fantastic','exciting','dramatic','terrific']
-contro_google=['controversy','controversial','arguable','vexed','argument','bickering',
-               'difference','discussion','fuss','quarrel','row','beef','rumpus','dissention']
-for words in excite_google:
-    s=get_all_similar_tos(words)
-    for w in s:
-        if w not in excite_dict.keys():
-            excite_dict[w]=1
-
-for words in contro_google:
-    s=get_all_similar_tos(words)
-    for w in s:
-        if w not in excite_dict.keys():
-            contro_dict[w]=1
-
-rain_dict={}
-h=[]
-s=get_all_synsets('rain')
-for word in s:
-    if word not in rain_dict.keys():
-        rain_dict[word]=1
+def ex_co_rain():
+    contro_list=[]
+    excite_list=[]
+    excite_google=['amazing','fantastic','exciting','dramatic','terrific']
+    contro_google=['controversy','controversial','arguable','vexed','argument','bickering',
+                   'difference','discussion','fuss','quarrel','row','beef','rumpus','dissention']
+    for words in excite_google:
+        s=get_all_similar_tos(words)
+        for w in s:
+            if w not in excite_list:
+                excite_list.append(w)
     
-for word in s:
-    h=get_all_hyponyms(word)
-    for w in h:
-        if w not in rain_dict.keys():
-            rain_dict[w]=1
-            
+    for words in contro_google:
+        s=get_all_similar_tos(words)
+        for w in s:
+            if w not in contro_list:
+                contro_list.append(w)
+    
+    rain_list=[]
+    h=[]
+    s=get_all_synsets('rain')
+    for word in s:
+        if word not in rain_list:
+            rain_list.append(word)
+        
+    for word in s:
+        h=get_all_hyponyms(word)
+        for w in h:
+            if w not in rain_list:
+                rain_list.append(w)
+    #print('rl', rain_list)
+    return excite_list, contro_list,rain_list
 
     
