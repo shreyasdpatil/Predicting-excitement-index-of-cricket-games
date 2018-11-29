@@ -46,12 +46,14 @@ from sentiment2 import pos_neg
 def feat_extractor(document):
 #    print('d', document) 
     feats = {}
-    [more_neutral, pos_neg_ratio,exciting_count, controversy_count, rain_count,lex0] = pos_neg(document)
+    document= document.lower()
+    [more_neutral, pos_neg_ratio,exciting_count, controversy_count, rain_count,up_down_count, lex0] = pos_neg(document)
     feats["more_neutral"] = more_neutral
     feats["pos_neg_ratio"] = pos_neg_ratio
     feats["exciting"]= exciting_count
     feats["controversy"]= controversy_count
     feats["rain"]= rain_count 
+    feats["up_down"]= up_down_count
 #    for i in range(len(lex0)):
 #        feats[lex0[i][0]+"_lex0"] = lex0[i][1]
 #        feats[lex0[i][0]+"_lex1"] = lex0[i][2]

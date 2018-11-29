@@ -43,6 +43,7 @@ for a in l:
     
 del lex[-1]
 lex_words=[]
+up_down= ['but', 'although']
 for t in range(len(lex)):
     lex_words.append(lex[t][0])
     
@@ -60,6 +61,7 @@ def pos_neg(document):
     exciting_count=0
     controversy_count=0
     rain_count=0
+    up_down_count=0
 
 
     for sent in sent_list:
@@ -85,6 +87,9 @@ def pos_neg(document):
                 controversy_count = controversy_count +1
             if word in rain:
                 rain_count = rain_count +1
+            if word in up_down:
+                up_down_count= up_down_count+1
+            
             if word in lex_words:
                 index=lex_words.index(word)
                 lex0.append([word,lex[index][1],lex[index][2]])
@@ -102,9 +107,9 @@ def pos_neg(document):
     
     if neg != 0:
         ratio = pos/neg
-        return more_neutral, ratio, exciting_count, controversy_count, rain_count, lex0 
+        return more_neutral, ratio, exciting_count, controversy_count, rain_count, up_down_count, lex0 
     else:
-        return more_neutral, pos, exciting_count, controversy_count, rain_count, lex0 
+        return more_neutral, pos, exciting_count, controversy_count, rain_count, up_down_count, lex0 
     
 
 

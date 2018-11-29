@@ -40,13 +40,32 @@ y_test= data_t.label
 
 
 from sklearn import datasets
-from sklearn.naive_bayes import GaussianNB
-gnb = GaussianNB()
-y_pred = gnb.fit(x_train, y_train)
-y = y_pred.predict(x_test)
+from sklearn.tree import DecisionTreeClassifier
+dtc = DecisionTreeClassifier()
+model = dtc.fit(x_train, y_train)
+y_pred = model.predict(x_test)
+
+#from sklearn import datasets
+#from sklearn.ensemble import RandomForestClassifier
+#rfc = RandomForestClassifier()
+#model = rfc.fit(x_train, y_train)
+#y_pred = model.predict(x_test)
+
+#from sklearn import datasets
+#from sklearn.svm import SVC
+#svc = SVC()
+#model = svc.fit(x_train, y_train)
+#y_pred = model.predict(x_test)
+
+#from sklearn import datasets
+#from sklearn.naive_bayes import GaussianNB
+#nb = GaussianNB()
+#model = nb.fit(x_train, y_train)
+#y_pred = model.predict(x_test)
+
 
 count=0
-for i in range(len(y)):
-    if y[i] == y_test[i]:
+for i in range(len(y_pred)):
+    if y_pred[i] == y_test[i]:
         count= count+1
-print('accuracy_final',count/len(y))
+print('accuracy_final',count/len(y_pred))
