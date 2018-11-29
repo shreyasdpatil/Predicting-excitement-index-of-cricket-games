@@ -52,9 +52,9 @@ def feat_extractor(document):
     feats["exciting"]= exciting_count
     feats["controversy"]= controversy_count
     feats["rain"]= rain_count 
-    for i in range(len(lex0)):
-        feats[lex0[i][0]+"_lex0"] = lex0[i][1]
-        feats[lex0[i][0]+"_lex1"] = lex0[i][2]
+#    for i in range(len(lex0)):
+#        feats[lex0[i][0]+"_lex0"] = lex0[i][1]
+#        feats[lex0[i][0]+"_lex1"] = lex0[i][2]
 #    feats["closeness"]= document.score
 #    feats["teams"]= document.team
 #    feats["type"]= document.type[j]
@@ -62,14 +62,26 @@ def feat_extractor(document):
 #    print('feats',feats)
     return feats 
 
+global pred_train
+global true_train
+pred_train=[]
 with open('Shreyasdata.json', 'r') as fp2:
     cl2 = NaiveBayesClassifier(fp2, feature_extractor=feat_extractor, format="json")
 
+train = pd.read_excel('Shreyasdata.xlsx') 
+true_train= train.label
+for instance in train.text:
+    blob = TextBlob(instance, classifier=cl2)
+    pred_train.append(int(float(blob.classify())))
+count=0
+for i in range(len(pred_train)):
+    if pred_train[i] == true_train[i]:
+        count= count+1
+print('accuracy_train',count/len(pred_train))
 
-
-test= open('Sarveshdata.json','r') 
-
-print('accuracy',cl2.accuracy(test, format='json'))
+#test= open('Sarveshdata.json','r') 
+#
+#print('accuracy',cl2.accuracy(test, format='json'))
 #test= open('Sarvesh datacol.json','r') 
 #print(cl2.accuracy(test, format='json'))
 #
@@ -77,17 +89,19 @@ print('accuracy',cl2.accuracy(test, format='json'))
 #text = test["Data"]
 #for i in text:
     
-pred=[]
+global pred_test
+global true_test
+pred_test=[]
 test = pd.read_excel('Sarveshdata.xlsx') 
-true= test.label
+true_test= test.label
 for instance in test.text:
     blob = TextBlob(instance, classifier=cl2)
-    pred.append(int(float(blob.classify())))
+    pred_test.append(int(float(blob.classify())))
 count=0
-for i in range(len(pred)):
-    if pred[i] == true[i]:
+for i in range(len(pred_test)):
+    if pred_test[i] == true_test[i]:
         count= count+1
-print('accuracy',count/len(pred))
+print('accuracy_test',count/len(pred_test))
 
 
 
