@@ -28,10 +28,10 @@ def get_all_synsets(word, pos=None):
 
 #--------------------------------------------------------------------------------------------------------#
     
-def ex_co_rain():
+def exc_con_rain():
     contro_list=[]
     excite_list=[]
-    excite_google=['amazing','fantastic','exciting','dramatic','terrific']
+    excite_google=['amazing','fantastic','exciting','dramatic','terrific','excellent','thriller','fierce','alas','phew','outstanding']
     contro_google=['controversy','controversial','arguable','vexed','argument','bickering',
                    'difference','discussion','fuss','quarrel','row','beef','rumpus','dissention']
     for words in excite_google:
@@ -39,13 +39,15 @@ def ex_co_rain():
         for w in s:
             if w not in excite_list:
                 excite_list.append(w)
-    
+        if words not in excite_list:
+            excite_list.append(words)
     for words in contro_google:
         s=get_all_similar_tos(words)
         for w in s:
             if w not in contro_list:
                 contro_list.append(w)
-    
+        if words not in contro_list:
+            contro_list.append(words)
     rain_list=[]
     h=[]
     s=get_all_synsets('rain')
@@ -59,6 +61,10 @@ def ex_co_rain():
             if w not in rain_list:
                 rain_list.append(w)
     #print('rl', rain_list)
+#    print('excite_list', excite_list)
+#    print('contro_list',contro_list)
+#    print('rain_list',rain_list)
     return excite_list, contro_list,rain_list
 
     
+exc_con_rain()

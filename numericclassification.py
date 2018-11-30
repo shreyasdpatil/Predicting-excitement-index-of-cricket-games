@@ -1,71 +1,162 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 27 14:29:44 2018
-
-@author: lubdhapimpale
-"""
 import pandas as pd
-#from sentiment import *
+import json as json
+from sklearn.preprocessing import normalize
+
 from score import *
-from sentiment import pred_train, true_train, pred_test, true_test
+import sentiment2
+from sentiment2 import *
+import numpy as np
+from textblob import TextBlob
+from textblob.classifiers import NaiveBayesClassifier
+from sklearn.model_selection import train_test_split
+import csv
 
+#global X_train
+#global X_test
+#global y_train
+#global y_test
+X_train= pd.read_csv("traindata.csv",'r')
+X_test= pd.read_csv("testdata.csv",'r')
+X_train= X_train.drop(["team"], axis=1)
+y_train= X_train['label']
+y_test= X_test['label']
+X_train= X_test.drop(columns=['label','team'])
+X_test= X_test.drop(columns=['label','team'])
+#y= df['label']
+#X_train, X_test, y_train, y_test= train_test_split(X,y,test_size= 0.3, shuffle= True)
+#
+#X_train = X_train.reset_index(drop=True)
+#X_test = X_test.reset_index(drop=True)
+#y_train = y_train.reset_index(drop=True)
+#y_test = y_test.reset_index(drop=True)
+#sentiment
+#train = pd.concat([X_train['text'],y_train], axis=1)
+#df.to_csv(train,index=False,header=False)
+#a= pd.DataFrame()
+
+
+
+train = pd.concat([X_train['text'],y_train], axis=1)
+
+with open('train.csv', 'r') as fp2:
+    cl2 = NaiveBayesClassifier(fp2, format="csv")        
+
+#var= open("train.json","w")
+#train_csv=pd.DataFrame.to_csv(train, index= False)         
+##train_csv = train_csv.replace('|','')
+#var.write(train_csv)
+#var.close()
+
+#with open('train_json', 'r') as fp2:
+
+
+pred_train=[]
+feature_train=[]
+true_train= train.label
+for instance in train.text:
+    feature_train.append(feats(instance))
+    blob = TextBlob(instance, classifier=cl2)
+    pred_train.append(int(float(blob.classify())))
+    
+
+#train_accuracy = cl2.accuracy('train.csv', format='csv')
+count=0
+for i in range(len(pred_train)):
+    if pred_train[i] == y_train[i]:
+        count= count+1
+print('train_accuracy',count/len(pred_train))
 pred_train= pd.DataFrame(pred_train)
+global pred_test
+global true_test
+
+ 
+test = pd.concat([X_test['text'],y_test], axis=1)
+var= open("test.json","w")
+test_csv=pd.DataFrame.to_csv(test, index= False)  
+var.write(test_csv)
+var.close()
+true_test= test.label
+pred_test=[]
+feature_test=[]
+for instance in test.text:
+    feature_test.append(feats(instance))
+    blob = TextBlob(instance, classifier=cl2)
+    pred_test.append(int(float(blob.classify())))
+
+#test_accuracy = cl2.accuracy('test.csv', format='csv')
+count=0
+for i in range(len(pred_test)):
+    if pred_test[i] == y_test[i]:
+        count= count+1
+print('test_accuracy',count/len(pred_test))
 pred_test= pd.DataFrame(pred_test)
-true_train= pd.DataFrame(true_train)
-true_test= pd.DataFrame(true_test)
+feature_train= pd.DataFrame(feature_train)
+feature_test= pd.DataFrame(feature_test)
 
-data = pd.read_csv('Shreyasdata.csv')
-score= pd.DataFrame(data.score)
-match_type= pd.DataFrame(data.match_type)
-for_score= pd.concat([score,match_type], axis=1)
+#thiscode
+score= X_train.score
+match_type= X_train.match_type
+closeness= pd.concat([score,match_type], axis=1)
 f1=[]
-for i in range(len(for_score)):
-    f1.append(get_score(for_score.iloc[i,0],for_score.iloc[i,1]))
-f1= pd.DataFrame(f1)
-x_train= pd.concat([pred_train,f1],axis=1)
-y_train= data.label
+for i in range(len(closeness)):
+    f1.append(get_score(closeness.iloc[i,0],closeness.iloc[i,1]))
 
+f11= pd.Series(f1)
+X_train_final = pd.concat([pred_train,feature_train,f11],axis=1)
 
-data_t = pd.read_csv('Sarveshdata.csv')
-score_t= pd.DataFrame(data_t.score)
-match_type_t= pd.DataFrame(data_t.match_type)
-for_score_t= pd.concat([score_t,match_type_t], axis=1)
+#X_train_final= normalize(X_train_final, axis=0 )
+
+score_t= X_test['score']
+match_type_t= X_test['match_type']
+closeness_t = pd.concat([score_t,match_type_t], axis=1)
 f2=[]
-for i in range(len(for_score_t)):
-    f2.append(get_score(for_score_t.iloc[i,0],for_score_t.iloc[i,1]))
-f2 = pd.DataFrame(f2)
-x_test= pd.concat([pred_test,f2],axis=1)
-y_test= data_t.label
+for i in range(len(closeness_t)):
+    f2.append(get_score(closeness_t.iloc[i,0],closeness_t.iloc[i,1]))
 
+f21= pd.Series(f2)
+X_test_final= pd.concat([pred_test,feature_test,f21],axis=1)
+#X_test_final= normalize(X_test_final, axis=0 )
 
-from sklearn import datasets
-from sklearn.tree import DecisionTreeClassifier
-dtc = DecisionTreeClassifier()
-model = dtc.fit(x_train, y_train)
-y_pred = model.predict(x_test)
+#from sklearn import datasets
+#from sklearn.tree import DecisionTreeClassifier
+#dtc = DecisionTreeClassifier()
+#model = dtc.fit(X_train_final, y_train)
+#y_pred = model.predict(X_test_final)
+#print("d",dtc.feature_importances_)
 
 #from sklearn import datasets
 #from sklearn.ensemble import RandomForestClassifier
-#rfc = RandomForestClassifier()
-#model = rfc.fit(x_train, y_train)
-#y_pred = model.predict(x_test)
+#rfc = RandomForestClassifier(n_estimators= 5)
+#model = rfc.fit(X_train_final, y_train)
+#y_pred = model.predict(X_test_final)
 
 #from sklearn import datasets
 #from sklearn.svm import SVC
 #svc = SVC()
-#model = svc.fit(x_train, y_train)
-#y_pred = model.predict(x_test)
+#model = svc.fit(X_train_final, y_train)
+#y_pred = model.predict(X_test_final)
 
 #from sklearn import datasets
 #from sklearn.naive_bayes import GaussianNB
 #nb = GaussianNB()
-#model = nb.fit(x_train, y_train)
-#y_pred = model.predict(x_test)
+#model = nb.fit(X_train_final, y_train)
+#y_pred = model.predict(X_test_final)
 
+
+from sklearn.neural_network import MLPClassifier
+
+clf = MLPClassifier(solver='lbfgs', alpha=1e-5, warm_start=True,beta_1= 0.95, hidden_layer_sizes=(6,1), random_state=1)
+clf.fit(X_train_final, y_train)     
+y_pred = clf.predict(X_test_final)   
 
 count=0
 for i in range(len(y_pred)):
     if y_pred[i] == y_test[i]:
         count= count+1
-print('accuracy_final',count/len(y_pred))
+print('accuracy_final',count/len(y_pred))  
+             
+
+#train_csv=pd.DataFrame.to_csv(train,header= False, index= False, escapechar="|",line_terminator="),\n(")        
+#train_csv = train_csv.replace('|','')
+#train_csv= train_csv[:-1]
+#train_csv= "[\n("+ train_csv +"]"
