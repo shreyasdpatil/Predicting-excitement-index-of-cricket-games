@@ -60,10 +60,6 @@ def exc_con_rain():
         for w in h:
             if w not in rain_list:
                 rain_list.append(w)
-    #print('rl', rain_list)
-#    print('excite_list', excite_list)
-#    print('contro_list',contro_list)
-#    print('rain_list',rain_list)
     return excite_list, contro_list,rain_list
 
     
