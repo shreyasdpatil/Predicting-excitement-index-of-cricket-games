@@ -62,5 +62,3 @@ def exc_con_rain():
                 rain_list.append(w)
     return excite_list, contro_list,rain_list
 
-    
-exc_con_rain()

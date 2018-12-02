@@ -1,4 +1,5 @@
 def get_score(score,match_type):
+    
     if "tie" in score:
         return 10
     elif "wkt" in score:
