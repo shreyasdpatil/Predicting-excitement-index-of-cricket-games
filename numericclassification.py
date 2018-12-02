@@ -177,3 +177,6 @@ for m in range(4,8 ):
         if accuracy > accuracy_final:
             accuracy_final = accuracy
 print("accuracy_final", accuracy_final)
+#Finding a score of summary
+#score_pred= clf.predict("Enter summary here")
+#print score_pred
