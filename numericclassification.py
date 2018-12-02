@@ -53,7 +53,7 @@ global true_test
 
  
 test = pd.concat([X_test['text'],y_test], axis=1)
-var= open("test.json","w")
+#var= open("test.json","w")
 test_csv=pd.DataFrame.to_csv(test, index= False)  
 var.write(test_csv)
 var.close()
