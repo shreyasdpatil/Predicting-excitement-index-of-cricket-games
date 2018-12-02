@@ -46,7 +46,7 @@ count=0
 for i in range(len(pred_train)):
     if pred_train[i] == y_train[i]:
         count= count+1
-print('train_accuracy',count/len(pred_train))
+#print('train_accuracy',count/len(pred_train))
 pred_train= pd.DataFrame(pred_train)
 global pred_test
 global true_test
@@ -69,7 +69,7 @@ count=0
 for i in range(len(pred_test)):
     if pred_test[i] == y_test[i]:
         count= count+1
-print('test_accuracy',count/len(pred_test))
+#print('test_accuracy',count/len(pred_test))
 pred_test= pd.DataFrame(pred_test)
 feature_train= pd.DataFrame(feature_train)
 feature_test= pd.DataFrame(feature_test)
