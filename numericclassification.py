@@ -23,12 +23,13 @@ y_train = y_train.reset_index(drop=True)
 y_test = y_test.reset_index(drop=True)
 
 
+train = pd.concat([X_train['text'],y_train], axis=1)
 var= open("train.csv","w")
 train_csv=pd.DataFrame.to_csv(train, index= False)         
 var.write(train_csv)
 var.close()
 
-train = pd.concat([X_train['text'],y_train], axis=1)
+# train = pd.concat([X_train['text'],y_train], axis=1)
 with open('train.csv', 'r') as fp2:
     cl2 = DecisionTreeClassifier(fp2, format="csv")        
 
