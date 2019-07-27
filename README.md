@@ -1,8 +1,8 @@
 # Predicting excitement index of cricket games based on match summary
-# Introduction
+## Introduction
 This repository contains code and data for predicting excitement index from 1-5 based on match summaries of various cricket games.
 
-# Dependencies
+## Dependencies
 The code is compatible with python 3. The following packages are required to run the application:
 1) TextBlob
 2) json
@@ -12,7 +12,7 @@ The code is compatible with python 3. The following packages are required to run
 6) csv
 7) nltk
 
-# Installation
+## Installation
 Clone the repositopry using:
 git clone https://github.com/shreyasdpatil/NLP-Project.git
 
